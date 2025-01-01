@@ -30,6 +30,8 @@ include_directories(${CERES_INCLUDE_DIRS})
 find_package(Glog REQUIRED)
 include_directories(${GLOG_INCLUDE_DIRS})
 
+find_package(fmt REQUIRED)
+include_directories(${fmt_INCLUDE_DIRS})
 # Thread
 find_package (Threads)
 

@@ -11,7 +11,7 @@ use_adapt: 0
 imu_topic: "/imu0"
 image0_topic: "/cam0/image_raw"
 image1_topic: "/cam1/image_raw"
-result_path: '/home/zoet/Projects.new/lvio-fusion/result/result.csv'
+result_path: '/home/as3r/lvio-fusion/result/result.csv'
 
 # cameras parameters
 undistort: 0

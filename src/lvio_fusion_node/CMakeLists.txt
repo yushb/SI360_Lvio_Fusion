@@ -15,8 +15,15 @@ find_package(catkin REQUIRED COMPONENTS
     pcl_conversions
     pcl_ros
     lvio_fusion
-    message_generation)
-include_directories(${catkin_INCLUDE_DIRS})
+    message_generation
+)
+    
+find_package(fmt REQUIRED)
+    
+include_directories(
+	${catkin_INCLUDE_DIRS}
+	${fmt_INCLUDE_DIRS}
+)
 
 # server
 add_service_files(
@@ -46,5 +53,8 @@ set(THIRD_PARTY_LIBS
 catkin_package(
     LIBRARIES lvio_fusion_node
     )
+
+
+
 
 add_subdirectory(src)

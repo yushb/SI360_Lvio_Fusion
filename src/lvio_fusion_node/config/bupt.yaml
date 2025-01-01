@@ -14,7 +14,7 @@ lidar_topic: '/lslidar_point_cloud'
 image0_topic: '/mynteye/left/image_raw'
 image1_topic: '/mynteye/right/image_raw'
 # color_topic: '/camera/color/image_raw'
-result_path: '/home/jyp/Projects/lvio-fusion/result/result.csv'
+result_path: '/home/as3r/lvio-fusion/result/result.csv'
 
 # cameras parameters
 undistort: 1

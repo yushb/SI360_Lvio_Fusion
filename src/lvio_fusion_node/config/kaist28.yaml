@@ -14,7 +14,7 @@ navsat_topic: '/gps/fix'
 image0_topic: '/stereo/left/image_raw'
 image1_topic: '/stereo/right/image_raw'
 color_topic: '/kitti/camera_color_left/image_raw'
-result_path: '/home/jyp/Projects/lvio_fusion/result/result.csv'
+result_path: '/home/as3r/lvio_fusion/result/result.csv'
 
 # cameras parameters
 undistort: 1

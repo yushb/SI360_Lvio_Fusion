@@ -1,5 +1,8 @@
 # lvio_fusion
 
+## Yushb's Note
+https://www.notion.so/SI360-1611031b3e5080668befdd9c390f6e73?pvs=4
+
 ## Introduction
 
 A Self-adaptive Multi-sensor Fusion SLAM Framework Using Actor-critic Method, which focus on the complex environment of vehicles.

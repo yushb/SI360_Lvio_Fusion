@@ -114,7 +114,7 @@ SE3d Environment::Optimize()
     return frame->pose;
 }
 
-inline double compute_reward(SE3d result, SE3d ground_truth, SE3d base)
+inline double compute_reward(SE3d result, SE3d ground_truth, SE3d base, Weights& current_weights, Weights& previous_weights)
 {
     SE3d error = ground_truth.inverse() * result;
     SE3d relative = base.inverse() * ground_truth;
@@ -128,11 +128,20 @@ inline double compute_reward(SE3d result, SE3d ground_truth, SE3d base)
     relative_error[0] = rpyxyz_error[3] / rpyxyz_relative[3];
     relative_error[1] = rpyxyz_error[4] / rpyxyz_relative[4];
     relative_error[2] = rpyxyz_error[5] / rpyxyz_relative[5];
-    return std::min(100.0, 1 / relative_error.norm());
+    double weight_diff_penalty = 0.0;
+    weight_diff_penalty += std::abs(current_weights.visual - previous_weights.visual);
+    weight_diff_penalty += std::abs(current_weights.lidar_ground - previous_weights.lidar_ground);
+    weight_diff_penalty += std::abs(current_weights.lidar_surf - previous_weights.lidar_surf);
+    weight_diff_penalty = std::min(weight_diff_penalty, 1.0);
+    double reward = 1 / relative_error.norm();
+    reward -= 0.1 * weight_diff_penalty;
+    return std::min(100.0, reward)
+    // return std::min(100.0, 1 / relative_error.norm());
 }
 
 void Environment::Step(Weights &weights, Observation &obs, float *reward, bool *done)
 {
+    Weights previous_weights = state_->second->weights;
     state_->second->weights = weights;
     SE3d result = Optimize();
     *reward = compute_reward(result, state_->second->pose, state_->second->last_keyframe->pose);

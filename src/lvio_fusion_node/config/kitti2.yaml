@@ -6,7 +6,7 @@ use_lidar: 1
 use_navsat: 1
 use_loop: 0             # 0 for only odometry, 1 for whole system
 use_eskf: 0
-use_adapt: 0
+use_adapt: 1
 
 # ros parameter
 imu_topic: '/imu_raw'
@@ -16,7 +16,7 @@ image0_topic: '/kitti/camera_gray_left/image_raw'
 image1_topic: '/kitti/camera_gray_right/image_raw'
 color_topic: '/kitti/camera_color_left/image_raw'
 result_path: '/home/as3r/lvio_fusion/result/result.csv'
-
+ground_truth_path: '/home/as3r/KITTI/gt.tum'
 # cameras parameters
 undistort: 0
 

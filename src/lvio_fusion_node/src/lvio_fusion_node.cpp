@@ -369,6 +369,7 @@ void keyboard_process()
     while (ros::ok())
     {
         key = getch();
+        std::cout<<static_cast<int>(estimator->frontend->status)<<std::endl;
         if (estimator->frontend->status != FrontendStatus::TRACKING)
             continue;
         switch (key)
@@ -378,6 +379,7 @@ void keyboard_process()
             ros::shutdown();
             break;
         case 't':
+            std::cout<<"Train value "<<train<< "in lfn.cpp"<<std::endl;
             if (train)
             {
                 read_ground_truth();
@@ -393,6 +395,7 @@ void keyboard_process()
             ROS_WARN("Final Navsat Optimization!");
             break;
         default:
+            std::cout<<"Undefined behavior"<<std::endl;
             break;
         }
     }
@@ -449,6 +452,7 @@ int main(int argc, char **argv)
     read_parameters(config_file);
     estimator = Estimator::Ptr(new Estimator(config_file));
     assert(estimator->Init(use_imu, use_lidar, use_navsat, use_loop, use_adapt) == true);
+    
     ROS_WARN("Waiting for images...");
     register_pub(n);
     ros::Timer tf_timer = n.createTimer(ros::Duration(0.0001), tf_timer_callback);
@@ -487,6 +491,7 @@ int main(int argc, char **argv)
         clt_update_weights = n.serviceClient<lvio_fusion_node::UpdateWeights>("/lvio_fusion_node/update_weight");
         Agent::SetCore(new RealCore());
     }
+    std::cout << "Train value: " << (train ? "true" : "false") << std::endl;
     if (train)
     {
         clt_init = n.serviceClient<lvio_fusion_node::Init>("/lvio_fusion_node/init");

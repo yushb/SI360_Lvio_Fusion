@@ -1,4 +1,4 @@
-#! /home/jyp/.miniconda3/envs/lvio_fusion/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from os import stat
@@ -8,27 +8,29 @@ import select
 import tty
 import termios
 from lvio_fusion_node.srv import *
-from rl_fusion.td3 import *
+from rl_fusion.rl_models import *
 from rl_fusion.env import LvioFusionEnv
 
 state = 0  # 0: have not started; 1: start training; 2: start evaluation
-
+save_net_path = '/home/as3r/lvio_fusion/misc/my_td3_02.pt'
+model_name="TD3"
 
 def load():
     global state
     if state == 0:
         state = 2
-        rospy.logwarn("Loading test_td3.")
-        load_td3()
-        rospy.logwarn("Loaded test_td3.")
+        rospy.logwarn("Loading test model.")
+        load()
+        rospy.logwarn("Loaded test model.")
 
 
 def init_callback(req):
     global state
     if state == 0:
+        print("init_callback_running")
         state = 1
-        rospy.logwarn("Start test_td3.")
-        train_td3()
+        rospy.logwarn(f"Start training {model_name}.")
+        train(model_name)
 
 
 def update_callback(req):
@@ -45,6 +47,7 @@ def get_key():
     rlist, _, _ = select.select([sys.stdin], [], [], None)
     if rlist:
         key = sys.stdin.read(1)
+        print(f"Received key: {key}")
     else:
         key = ''
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
@@ -52,11 +55,15 @@ def get_key():
 
 
 if __name__ == '__main__':
+    
+    
     try:
+        print("-------------------------")
         rospy.init_node('rl_fusion_node')
         LvioFusionEnv.obs_rows = rospy.get_param('~obs_rows')
         LvioFusionEnv.obs_cols = rospy.get_param('~obs_cols')
         mode = rospy.get_param('~mode')
+        print(f"state: {state}, mode: {mode}")
         server_init = rospy.Service(
             '/lvio_fusion_node/init', Init, init_callback)
         server_update_weights = rospy.Service(

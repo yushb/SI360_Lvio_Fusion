@@ -134,8 +134,9 @@ inline double compute_reward(SE3d result, SE3d ground_truth, SE3d base, Weights&
     weight_diff_penalty += std::abs(current_weights.lidar_surf - previous_weights.lidar_surf);
     weight_diff_penalty = std::min(weight_diff_penalty, 1.0);
     double reward = 1 / relative_error.norm();
-    reward -= 0.1 * weight_diff_penalty;
-    return std::min(100.0, reward)
+    float _lambda = 0.2;
+    reward -= _lambda * weight_diff_penalty;
+    return std::min(100.0, reward);
     // return std::min(100.0, 1 / relative_error.norm());
 }
 
@@ -144,7 +145,7 @@ void Environment::Step(Weights &weights, Observation &obs, float *reward, bool *
     Weights previous_weights = state_->second->weights;
     state_->second->weights = weights;
     SE3d result = Optimize();
-    *reward = compute_reward(result, state_->second->pose, state_->second->last_keyframe->pose);
+    *reward = compute_reward(result, state_->second->pose, state_->second->last_keyframe->pose, weights, previous_weights);
     LOG(INFO) << *reward;
     state_++;
     if (state_ == frames_.end())

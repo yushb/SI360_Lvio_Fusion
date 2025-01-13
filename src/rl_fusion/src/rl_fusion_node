@@ -12,7 +12,7 @@ from rl_fusion.rl_models import *
 from rl_fusion.env import LvioFusionEnv
 
 state = 0  # 0: have not started; 1: start training; 2: start evaluation
-save_net_path = '/home/as3r/lvio_fusion/misc/my_td3_02.pt'
+
 model_name="TD3"
 
 def load():
@@ -29,7 +29,7 @@ def init_callback(req):
     if state == 0:
         print("init_callback_running")
         state = 1
-        rospy.logwarn(f"Start training {model_name}.")
+        rospy.logwarn(f"Start training {model统一配额}.")
         train(model_name)
 
 
